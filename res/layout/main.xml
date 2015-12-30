@@ -4,25 +4,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/main" android:weightSum="1">
-    <RelativeLayout
-            android:orientation="vertical"
+    <TextView
+            android:gravity="center"
+            android:textSize="70sp"
+            android:text="@string/temperature"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="138dp" android:textAlignment="center"
+            android:id="@+id/nasCurrentTemperature"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/spread_line_chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-                android:gravity="center"
-                android:text="@string/temperature"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent" android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" android:layout_marginTop="138dp" android:textAlignment="center"
-                android:id="@+id/nasCurrentTemperature"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/spread_line_chart"
-                android:layout_width="match_parent"
-                android:layout_height="150dp" android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true">
-        </com.github.mikephil.charting.charts.LineChart>
-    </RelativeLayout>
-
+            android:layout_height="150dp" android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
+    </com.github.mikephil.charting.charts.LineChart>
 </RelativeLayout>
 

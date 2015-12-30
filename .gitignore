@@ -17,6 +17,6 @@ atlassian-ide-plugin.xml
 target
 build
 .gradle
-out
+out/*
 proguard-project.txt
 .idea/

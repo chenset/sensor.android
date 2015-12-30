@@ -23,11 +23,15 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class SensorFragment extends Fragment {
     private LineChart mLineChart;
@@ -47,27 +51,23 @@ public class SensorFragment extends Fragment {
         mLineChart = (LineChart) v.findViewById(R.id.spread_line_chart);
 
         rl = (RelativeLayout) v.findViewById(R.id.main);
-        rl.setBackgroundColor(Color.BLUE);
+//        rl.setBackgroundColor(Color.BLUE);
 
         nasTemp = (TextView) v.findViewById(R.id.nasCurrentTemperature);
 
-        LineData mLineData = getLineData(6, 100);
-
-        showChart(mLineChart, mLineData, Color.alpha(0));
-
-        new ChangeColorTask().execute("http://www.chenof.com:88/nas");
-        new ChangeColorTask().execute("http://www.chenof.com:88/route");
+        new ChangeMainTemperatureTask().execute("http://www.chenof.com:88/nas");
+        new ChangeLineChartTask().execute("http://www.chenof.com:88/nas/temperatures");
         return v;
     }
 
-    private class ChangeColorTask extends AsyncTask<String, Void, String> {
+    private class ChangeMainTemperatureTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String html;
             try {
                 html = HTTP.get(params[0]);
             } catch (IOException ioe) {
-                throw new RuntimeException("lsdjflsjflsj");
+                throw new RuntimeException();
             }
 
             return html;
@@ -85,12 +85,70 @@ public class SensorFragment extends Fragment {
             }
 
             try {
-                nasTemp.setText(nasTemp.getText() + " \r\n " + jsonObject.getString("CPU"));
+                nasTemp.setText(jsonObject.getString("CPU"));
             } catch (Exception e) {
                 throw new RuntimeException();
             }
+        }
+    }
 
-            rl.setBackgroundColor(Color.BLACK);
+    private class ChangeLineChartTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String html;
+            try {
+                html = HTTP.get(params[0]);
+            } catch (IOException ioe) {
+                throw new RuntimeException();
+            }
+
+            return html;
+        }
+
+        @Override
+        protected void onPostExecute(String html) {
+            System.out.println(html);
+            JSONArray jsonArr;
+            try {
+                jsonArr = new JSONArray(html);
+            } catch (JSONException e) {
+                throw new RuntimeException();
+            }
+
+            JSONObject jsonObj;
+
+            ArrayList<Double> yData = new ArrayList<>();
+            ArrayList<String> xData = new ArrayList<>();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                try {
+                    jsonObj = jsonArr.getJSONObject(i);
+                } catch (JSONException e) {
+                    throw new RuntimeException();
+                }
+
+                try {
+                    yData.add(jsonObj.getDouble("CPU"));
+                    System.out.println(jsonObj.getString("CPU"));
+                    System.out.println(jsonObj.getInt("add_time"));
+
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String d = format.format(new Date(jsonObj.getLong("add_time") * 1000));
+//                    Date date = format.parse(d);
+
+                    System.out.println("Format To String(Date):" + d);
+
+                    xData.add(d);
+//                    System.out.println("Format To Date:" + date);
+
+                } catch (Exception e) {
+                    throw new RuntimeException();
+                }
+
+                LineData mLineData = getLineData(yData, xData);
+                showChart(mLineChart, mLineData, Color.alpha(0));
+
+            }
+
         }
     }
 
@@ -146,23 +204,14 @@ public class SensorFragment extends Fragment {
 
     /**
      * 生成一个数据
-     *
-     * @param count 表示图表中有多少个坐标点
-     * @param range 用来生成range以内的随机数
      * @return LineData
      */
-    private LineData getLineData(int count, float range) {
-        ArrayList<String> xValues = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            // x轴显示的数据，这里默认使用数字下标显示
-            xValues.add("" + i);
-        }
+    private LineData getLineData(ArrayList<Double> yData, ArrayList<String> xValues) {
 
         // y轴的数据
-        ArrayList<Entry> yValues = new ArrayList<Entry>();
-        for (int i = 0; i < count; i++) {
-            float value = (float) (Math.random() * range) + 3;
-            yValues.add(new Entry(value, i));
+        ArrayList<Entry> yValues = new ArrayList<>();
+        for (int i = 0; i < yData.size(); i++) {
+            yValues.add(new Entry(new Float(yData.get(i)), i));
         }
 
         // create a dataset and give it a type
