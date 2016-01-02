@@ -166,9 +166,13 @@ public class SensorFragment extends Fragment {
         lineChart.setGridBackgroundColor(Color.alpha(0)); // 表格的的颜色，在这里是是给颜色设置一个透明度
         // enable touch gestures
         XAxis xAxis = lineChart.getXAxis();
-        lineChart.getAxisLeft().setEnabled(false);
+        YAxis yAxis = lineChart.getAxisLeft();
         lineChart.getAxisRight().setEnabled(false);
         xAxis.setEnabled(false);
+
+        yAxis.setEnabled(false);
+        yAxis.setStartAtZero(false);
+        yAxis.setAxisMinValue(lineData.getYMin() - 2);
 
         lineChart.fitScreen();
 
@@ -204,6 +208,7 @@ public class SensorFragment extends Fragment {
 
     /**
      * 生成一个数据
+     *
      * @return LineData
      */
     private LineData getLineData(ArrayList<Double> yData, ArrayList<String> xValues) {
