@@ -1,12 +1,8 @@
 package com.flysay.sensor;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -25,23 +20,35 @@ import com.github.mikephil.charting.data.LineDataSet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import java.util.UUID;
 
 public class SensorFragment extends Fragment {
     private LineChart mLineChart;
     private RelativeLayout rl;
     private TextView nasTemp;
-    public final static String TAG = "TTTTTTTTTTTTTTTTTT";
+    public final static String EXTRA_ID = "EXTRA_ID";
+    private int currentPos = 0;
+//    private ArrayList<>
+
+    public static SensorFragment newInstance(int pos) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_ID, pos);
+
+        SensorFragment fragment = new SensorFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
+        currentPos = (int) getArguments().getSerializable(EXTRA_ID);
     }
 
     @Override
@@ -55,8 +62,14 @@ public class SensorFragment extends Fragment {
 
         nasTemp = (TextView) v.findViewById(R.id.nasCurrentTemperature);
 
-        new ChangeMainTemperatureTask().execute("http://www.chenof.com:88/nas");
-        new ChangeLineChartTask().execute("http://www.chenof.com:88/nas/temperatures");
+        System.out.println(currentPos);
+
+        System.out.println(new Date().toString());
+
+        Sensor sensor = Sensor.get(currentPos);
+
+        new ChangeMainTemperatureTask().execute(sensor.getCurrentTemperatureUrl());
+        new ChangeLineChartTask().execute(sensor.getTemperatureListUrl());
         return v;
     }
 
@@ -75,8 +88,6 @@ public class SensorFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String html) {
-            Log.d(TAG, html);
-
             JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(html);

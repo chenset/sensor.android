@@ -1,10 +1,14 @@
-package com.flysay.sensor;
+/**
+ * Deprecated
+ */
 
-import android.support.v4.app.Fragment;
+//package com.flysay.sensor;
 
-public class sensorActivity extends SingleFragmentActivity {
-    @Override
-    public Fragment createFragment() {
-        return new SensorFragment();
-    }
-}
+//import android.support.v4.app.Fragment;
+
+//public class SensorActivity extends SingleFragmentActivity {
+//    @Override
+//    public Fragment createFragment() {
+//        return new SensorFragment();
+//    }
+//}
