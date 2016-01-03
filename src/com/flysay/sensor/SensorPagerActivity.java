@@ -18,12 +18,10 @@ public class SensorPagerActivity extends FragmentActivity {
         mViewPager.setId(R.id.viewPager);
         setContentView(mViewPager);
 
-        Sensor oneSensor = new NasSensor();
-        Sensor.addSensor(oneSensor);
-        Sensor.addSensor(oneSensor);
-        Sensor.addSensor(oneSensor);
-        Sensor.addSensor(oneSensor);
-        Sensor.addSensor(oneSensor);
+        Sensor nasSensor = new NasSensor();
+        Sensor routeSensor = new RouteSensor();
+        Sensor.addSensor(nasSensor);
+        Sensor.addSensor(routeSensor);
 
         FragmentManager fm = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
