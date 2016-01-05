@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +24,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 public class SensorFragment extends Fragment {
     private LineChart mLineChart;
     private RelativeLayout rl;
-    private TextView nasTemp;
+    private TextView deviceTemp;
     public final static String EXTRA_ID = "EXTRA_ID";
     private int currentPos = 0;
 //    private ArrayList<>
@@ -60,7 +58,7 @@ public class SensorFragment extends Fragment {
         rl = (RelativeLayout) v.findViewById(R.id.main);
 //        rl.setBackgroundColor(Color.BLUE);
 
-        nasTemp = (TextView) v.findViewById(R.id.nasCurrentTemperature);
+        deviceTemp = (TextView) v.findViewById(R.id.nasCurrentTemperature);
 
         System.out.println(currentPos);
 
@@ -96,7 +94,7 @@ public class SensorFragment extends Fragment {
             }
 
             try {
-                nasTemp.setText(jsonObject.getString("CPU"));
+                deviceTemp.setText(jsonObject.getString("CPU") + "°");
             } catch (Exception e) {
                 throw new RuntimeException();
             }
@@ -118,7 +116,6 @@ public class SensorFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String html) {
-            System.out.println(html);
             JSONArray jsonArr;
             try {
                 jsonArr = new JSONArray(html);
@@ -159,7 +156,6 @@ public class SensorFragment extends Fragment {
                 showChart(mLineChart, mLineData, Color.alpha(0));
 
             }
-
         }
     }
 
@@ -169,6 +165,7 @@ public class SensorFragment extends Fragment {
 
         // no description text
         lineChart.setDescription("");// 数据描述
+//        lineChart.setDescriptionColor(Color.alpha(255));
         // 如果没有数据的时候，会显示这个，类似listview的emtpyview
         lineChart.setNoDataTextDescription("You need to provide data for the chart.");
 
@@ -187,7 +184,7 @@ public class SensorFragment extends Fragment {
 
         lineChart.fitScreen();
 
-        lineChart.setViewPortOffsets(0f, 0f, 0f, 0f);
+        lineChart.setViewPortOffsets(70f, 50f, 70f, 70f);
 
         lineChart.setTouchEnabled(true); // 设置是否可以触摸
 
@@ -241,7 +238,7 @@ public class SensorFragment extends Fragment {
         lineDataSet.setCircleSize(3f);// 显示的圆形大小
         lineDataSet.setColor(Color.WHITE);// 显示颜色
         lineDataSet.setCircleColor(Color.WHITE);// 圆形的颜色
-        lineDataSet.setCircleColorHole(Color.BLACK);
+        lineDataSet.setCircleColorHole(Color.parseColor("#0099ff"));
         lineDataSet.setHighlightEnabled(false);
         lineDataSet.setValueTextSize(12);
         lineDataSet.setValueTextColor(Color.WHITE);
@@ -249,7 +246,7 @@ public class SensorFragment extends Fragment {
 
 //        lineDataSet.setDrawCubic(true);
         lineDataSet.setFillColor(Color.WHITE);
-        lineDataSet.setFillAlpha(255);
+        lineDataSet.setFillAlpha(150);
 //        lineDataSet.setDrawCircles(false);
 //        lineDataSet.setDrawValues(false);
         lineDataSet.setDrawFilled(true);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">sensor</string>
-    <string name="temperature">loading ..</string>
+    <string name="temperature">0°</string>
 </resources>
