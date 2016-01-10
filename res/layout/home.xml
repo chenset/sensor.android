@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/home"
+                android:background="#0099FF"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <TextView
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="90sp"
+            android:text="@string/temperature"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:id="@+id/roomCurrentTemperature"
+            android:layout_marginTop="83dp"
+            android:layout_alignParentTop="true" android:layout_alignParentStart="true"/>
+
+
+    <TextView
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="90sp"
+            android:text="@string/humidity"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:id="@+id/roomCurrentHumidity"
+            android:layout_marginTop="55dp"
+            android:layout_below="@+id/roomCurrentTemperature" android:layout_alignParentStart="true"/>
+
+
+</RelativeLayout>
