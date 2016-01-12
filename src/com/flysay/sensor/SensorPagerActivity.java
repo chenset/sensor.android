@@ -1,18 +1,33 @@
 package com.flysay.sensor;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
+import android.view.MenuItem;
 
 public class SensorPagerActivity extends FragmentActivity {
     private ViewPager mViewPager;
+    private SensorFragment currentF;
+    private HomeFragment currentHomeF;
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                int pos = mViewPager.getCurrentItem();
+                if (pos == 0) {
+                    currentHomeF.refreshData();
+                } else {
+                    currentF.refreshData(pos - 1);
+                }
+                break;
+        }
+
+        return super.onMenuItemSelected(featureId, item);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +54,11 @@ public class SensorPagerActivity extends FragmentActivity {
             @Override
             public Fragment getItem(int pos) {
                 if (pos == 0) {
-                    return Home.newInstance(pos);
+                    currentHomeF = HomeFragment.newInstance(pos);
+                    return currentHomeF;
                 } else {
-                    return SensorFragment.newInstance(pos - 1);
+                    currentF = SensorFragment.newInstance(pos - 1);
+                    return currentF;
                 }
             }
         });

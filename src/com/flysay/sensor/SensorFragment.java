@@ -4,9 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -44,8 +42,16 @@ public class SensorFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
+
+        setHasOptionsMenu(true);
         currentPos = (int) getArguments().getSerializable(EXTRA_ID);
     }
 
@@ -64,11 +70,15 @@ public class SensorFragment extends Fragment {
 
         System.out.println(new Date().toString());
 
-        Sensor sensor = Sensor.get(currentPos);
+        refreshData(currentPos);
 
+        return v;
+    }
+
+    public void refreshData(int pos) {
+        Sensor sensor = Sensor.get(pos);
         new ChangeMainTemperatureTask().execute(sensor.getCurrentTemperatureUrl());
         new ChangeLineChartTask().execute(sensor.getTemperatureListUrl());
-        return v;
     }
 
     private class ChangeMainTemperatureTask extends AsyncTask<String, Void, String> {

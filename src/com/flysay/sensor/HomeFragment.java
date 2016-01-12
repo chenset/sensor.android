@@ -3,32 +3,36 @@ package com.flysay.sensor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class Home extends Fragment {
+public class HomeFragment extends Fragment {
     public final static String EXTRA_ID = "EXTRA_ID";
     public TextView roomCurrentTemperature;
     public TextView roomCurrentHumidity;
 
-    public static Home newInstance(int pos) {
+    public static HomeFragment newInstance(int pos) {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_ID, pos);
 
-        Home fragment = new Home();
+        HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
 
         return fragment;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
     }
 
     @Override
     public void onCreate(Bundle saveInstanceStats) {
         super.onCreate(saveInstanceStats);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -37,8 +41,12 @@ public class Home extends Fragment {
         roomCurrentTemperature = (TextView) v.findViewById(R.id.roomCurrentTemperature);
         roomCurrentHumidity = (TextView) v.findViewById(R.id.roomCurrentHumidity);
 
-        new HomeSensorTask().execute("http://www.chenof.com:88/room");
+        refreshData();
         return v;
+    }
+
+    public void refreshData() {
+        new HomeSensorTask().execute("http://www.chenof.com:88/room");
     }
 
     private class HomeSensorTask extends AsyncTask<String, Void, String> {

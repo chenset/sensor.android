@@ -5,26 +5,26 @@
                 android:layout_height="wrap_content"
                 android:background="#0099ff"
                 android:id="@+id/main" android:weightSum="1">
-    <ImageButton
-            android:background="#0099ff"
-            android:contentDescription=""
-            android:src="@drawable/btn_refresh"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitXY"
-            android:id="@+id/imageButton"
-            android:layout_marginEnd="27dp"
-            android:layout_alignTop="@+id/imageButton2" android:layout_alignParentEnd="true"/>
-    <ImageButton
-            android:background="#0099ff"
-            android:src="@drawable/btn_more"
-            android:contentDescription=""
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitXY"
-            android:id="@+id/imageButton2"
-            android:layout_alignParentTop="true" android:layout_alignParentStart="true"
-            android:layout_marginStart="30dp" android:layout_marginTop="27dp"/>
+    <!--<ImageButton-->
+            <!--android:background="#0099ff"-->
+            <!--android:contentDescription=""-->
+            <!--android:src="@drawable/btn_refresh"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:id="@+id/imageButton"-->
+            <!--android:layout_marginEnd="27dp"-->
+            <!--android:layout_alignTop="@+id/imageButton2" android:layout_alignParentEnd="true"/>-->
+    <!--<ImageButton-->
+            <!--android:background="#0099ff"-->
+            <!--android:src="@drawable/btn_more"-->
+            <!--android:contentDescription=""-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:id="@+id/imageButton2"-->
+            <!--android:layout_alignParentTop="true" android:layout_alignParentStart="true"-->
+            <!--android:layout_marginStart="30dp" android:layout_marginTop="27dp"/>-->
     <TextView
             android:gravity="center"
             android:textColor="#fff"
