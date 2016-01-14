@@ -15,16 +15,7 @@ public class SensorPagerActivity extends FragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                int pos = mViewPager.getCurrentItem();
-                if (pos == 0) {
-                    currentHomeF.refreshData();
-                } else {
-                    currentF.refreshData(pos - 1);
-                }
-                break;
-        }
+        mViewPager.getAdapter().notifyDataSetChanged();
 
         return super.onMenuItemSelected(featureId, item);
     }
@@ -61,6 +52,11 @@ public class SensorPagerActivity extends FragmentActivity {
                     return currentF;
                 }
             }
+
+            @Override
+            public int getItemPosition(Object object) {
+                return POSITION_NONE;
+            }
         });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -86,11 +82,7 @@ public class SensorPagerActivity extends FragmentActivity {
             }
         });
 
-
         mViewPager.setCurrentItem(0);
         setTitle("Room Sensor");
-////        Sensor sensor = Sensor.get(0);
-//        setTitle(sensor.getSensorName() + " Sensor");
     }
-
 }

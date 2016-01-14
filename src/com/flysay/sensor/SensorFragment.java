@@ -59,12 +59,12 @@ public class SensorFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup viewGroup, Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.main, viewGroup, false);
 
-        mLineChart = (LineChart) v.findViewById(R.id.spread_line_chart);
+        mLineChart = ((LineChart) v.findViewById(R.id.spread_line_chart));
 
         rl = (RelativeLayout) v.findViewById(R.id.main);
 //        rl.setBackgroundColor(Color.BLUE);
 
-        deviceTemp = (TextView) v.findViewById(R.id.nasCurrentTemperature);
+        deviceTemp = ((TextView) v.findViewById(R.id.nasCurrentTemperature));
 
         System.out.println(currentPos);
 
@@ -106,7 +106,7 @@ public class SensorFragment extends Fragment {
             try {
                 deviceTemp.setText(jsonObject.getString("CPU") + "°");
             } catch (Exception e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e.getMessage());
             }
         }
     }
